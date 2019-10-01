@@ -17,8 +17,16 @@ return Math.random().toString(36).slice(-6);
 };
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
-  res.send(generateRandomString());         // Respond with 'Ok' (we will replace this)
+  console.log(req.body);
+   shortURL = generateRandomString();
+  urlDatabase[shortURL] = req.body.longURL;  // Log the POST request body to the console
+  res.redirect(`/urls/${shortURL}`);
+  res.send("ok");         // Respond with 'Ok' (we will replace this)
+});
+
+app.get("/u/:shortURL", (req, res) => {
+   const longURL = 'http://' + urlDatabase[req.params.shortURL];
+  res.redirect(longURL);
 });
 
 app.get("/urls/new", (req, res) => {
