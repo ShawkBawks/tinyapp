@@ -16,14 +16,23 @@ function generateRandomString() {
 return Math.random().toString(36).slice(-6);
 };
 
+//edit post
+app.post("/urls/:shortURL/", (req, res) => {
+  urlDatabase[req.params.shortURL] = req.body.longURL;
+res.redirect(`/urls`);
+});
+
+//delete post
 app.post("/urls/:shortURL/delete", (req, res) => {
   let shortURL = req.params.shortURL; 
-  console.log(shortURL);
+  console.log(shortURL); 
   delete urlDatabase[shortURL];
 
   res.redirect("/urls");
 });
 
+
+//new
 app.post("/urls", (req, res) => {
   console.log(req.body);
    shortURL = generateRandomString();
