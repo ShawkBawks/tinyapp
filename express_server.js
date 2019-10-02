@@ -30,13 +30,6 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls")
 });
 
-
-
-// It should set a cookie named username to the value submitted in the request body via the login form. 
-// After our server has set the cookie it should redirect the browser back to the /urls page.
-
-
-
 //edit post
 app.post("/urls/:shortURL/", (req, res) => {
   urlDatabase[req.params.shortURL] = req.body.longURL;
@@ -52,49 +45,69 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   res.redirect("/urls");
 });
 
-
 //new
 app.post("/urls", (req, res) => {
   console.log(req.body);
    shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body.longURL;  // Log the POST request body to the console
   res.redirect(`/urls/${shortURL}`);
-  res.send("ok");         // Respond with 'Ok' (we will replace this)
+  res.send("ok");        
 });
 
+
+//register page
+app.get("/register", (req, res) =>{
+
+  res.render("/urls_register", {username: ""})
+});
+
+
+
+//shorturl to longurl redirect
 app.get("/u/:shortURL", (req, res) => {
    const longURL = 'http://' + urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
 
+//displays page for /urls/new
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  let templateVars = {
+    username: req.cookies["username"], urls: urlDatabase };
+  res.render("urls_new", templateVars);
 });
 
+
+//homepage template
 app.get('/urls', (req, res) => {
   let templateVars = {
     username: req.cookies["username"], urls: urlDatabase };
   res.render("urls_index", templateVars);
 });
 
+//displays url list
 app.get('/urls/:shortURL', (req, res) => {
   let shortURL = req.params.shortURL
   let templateVars = { username: req.cookies["username"], shortURL: shortURL, longURL: urlDatabase[shortURL] };
   res.render("urls_show", templateVars);
 });
 
+
+//redirects to /urls
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  res.redirect("/urls");
 });
 
+
+//displays json information of urlDatabase
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
-});
-
-app.get("/hello", (req, res) => {
-  res.send("<html><body>Hello <b>World</b></body></html>\n")
 });
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
+
+
+// app.get("/hello", (req, res) => {
+//   res.send("<html><body>Hello <b>World</b></body></html>\n")
+// });
