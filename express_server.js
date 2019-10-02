@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
+const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser())
 
 app.set('view engine', 'ejs');
 
@@ -15,6 +17,25 @@ function generateRandomString() {
   Math.random().toString(36).slice(-6);
 return Math.random().toString(36).slice(-6);
 };
+//login
+app.post("/login", (req, res) => {
+  console.log(req.body)
+  res.cookie('username', req.body.username);
+  res.redirect("/urls")
+});
+
+//logout
+app.post("/logout", (req, res) => {
+  res.clearCookie('username')
+  res.redirect("/urls")
+});
+
+
+
+// It should set a cookie named username to the value submitted in the request body via the login form. 
+// After our server has set the cookie it should redirect the browser back to the /urls page.
+
+
 
 //edit post
 app.post("/urls/:shortURL/", (req, res) => {
@@ -51,13 +72,14 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  let templateVars = { urls: urlDatabase };
+  let templateVars = {
+    username: req.cookies["username"], urls: urlDatabase };
   res.render("urls_index", templateVars);
 });
 
 app.get('/urls/:shortURL', (req, res) => {
   let shortURL = req.params.shortURL
-  let templateVars = { shortURL: shortURL, longURL: urlDatabase[shortURL] };
+  let templateVars = { username: req.cookies["username"], shortURL: shortURL, longURL: urlDatabase[shortURL] };
   res.render("urls_show", templateVars);
 });
 
@@ -76,5 +98,3 @@ app.get("/hello", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
-
-
