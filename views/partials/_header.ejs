@@ -15,7 +15,7 @@
     <% if (username === undefined) { %>
     <form class="form-inline" method="POST" action="/login" label for="username">
       <label for="username"><%= username %></label>
-      <input class="form-control" type="text" name="username"placeholder="username"> 
+      <input class="form-control" style="margin-right: 1rem" type="text" name="username"placeholder="username"> 
       <button type="submit" class="btn btn-warning">Login</button>
   </form> 
    
@@ -23,7 +23,6 @@
   
     <form class="form-inline" method="POST" action="/logout" label for="username">
       <a style="margin-right: 1rem" >TinyApp Logged in as: <%= username %></a>
-      <!-- <label for="username"><%= username %></label>
       <input class="form-control" type="text" name="username"placeholder="username">  -->
       <button type="submit" class="btn btn-warning">Logout</button>
   </form> 
