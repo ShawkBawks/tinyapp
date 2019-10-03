@@ -21,11 +21,14 @@ const users = {
   }
 }
 
-
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
+  i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" }
 };
+// const urlDatabase = {
+//   "b2xVn2": "http://www.lighthouselabs.ca",
+//   "9sm5xK": "http://www.google.com"
+// };
 
 function generateRandomString() {
   Math.random().toString(36).slice(-6);
@@ -52,23 +55,6 @@ app.post("/register", (req, res) => {
   res.cookie('user_id', newUser.id);
   res.redirect('/urls');
 });
-
-// app.post("/login", (req,res) => {
-//   let userObject = undefined;
-//   for (const user in users) {
-//     if (req.body.email === users[user].email ) {
-//       if (req.body.password === users[user].password) {
-//         userObject = users[user]
-//         res.cookie("user_id", users[user].id);
-//         // LOGIN - USE RES.COOKIE TO SET COOKIE
-//         res.redirect("/urls");
-//       } else {
-//         res.status(403).send("The password is incoff rrec")
-//       }
-//     }
-//       userObject = undefined
-//   }
-
 
 //login
 app.post("/login", (req, res) => {
@@ -147,7 +133,11 @@ app.get("/urls/new", (req, res) => {
     urls: urlDatabase,
     user: users[userID]
   };
+  if (userID) {
   res.render("urls_new", templateVars);
+  } else {
+    res.redirect("/login")
+  }
 });
 
 app.get("/login", (req, res) => {
