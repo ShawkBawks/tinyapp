@@ -55,9 +55,9 @@ function generateRandomString() {
   Math.random().toString(36).slice(-6);
   return Math.random().toString(36).slice(-6);
 };
-app.post("/register", (req, res) => {
 
-  // console.log(req.body);
+//register page
+app.post("/register", (req, res) => {
   if (req.body.email.length === 0 || req.body.password.length === 0) {
     res.status(400).send('You need to fill both fields!');
   }
@@ -133,10 +133,8 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
 //new
 app.post("/urls", (req, res) => {
-  let userID = req.session.user_id;
-
   shortURL = generateRandomString();
-  urlDatabase[shortURL] = { longURL: req.body.longURL, userID };  // Log the POST request body to the console
+  urlDatabase[shortURL] = { longURL: req.body.longURL, userID };
   res.redirect(`/urls/${shortURL}`);
 });
 
@@ -186,13 +184,6 @@ app.get("/login", (req, res) => {
   res.render("urls_login", templateVars);
 });
 
-// function findUrlsForUser(userID)
-// find urls of logged in user
-// user_id: req.session.user_id,
-// urls: urlDatabase,
-// user: users[userID]
-
-
 
 //homepage template
 app.get('/urls', (req, res) => {
@@ -232,7 +223,12 @@ app.get('/urls/:shortURL', (req, res) => {
 
 //redirects to /urls
 app.get("/", (req, res) => {
+  let userID = req.session.user_id;
+  if (userID === undefined) {
+    res.redirect("/login")
+  } else {
   res.redirect("/urls");
+  }
 });
 
 
