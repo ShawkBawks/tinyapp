@@ -27,20 +27,3 @@ describe('getUserByEmail', function () {
     assert.equal(user, expectedOutput);
   });
 });
-
-
-
-
-
-/*
-remove register button of header when logged in
-
-redirect from /  to /login if not logged in
-
-returns html error page if user not logged in on /urls
-
-
-
-
-
-*/

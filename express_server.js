@@ -22,7 +22,7 @@ app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }))
 
-
+//user database
 const users = {
   "1": {
     id: "1",
@@ -35,7 +35,7 @@ const users = {
     password: "dishwasher-funk"
   }
 }
-
+//url database
 const urlDatabase = {
   b6UTxQ: { longURL: "http://www.tsn.ca", userID: "1" },
   i3BoGr: { longURL: "http://www.google.ca", userID: "2" }
