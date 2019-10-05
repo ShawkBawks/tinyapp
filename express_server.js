@@ -133,6 +133,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
 //new
 app.post("/urls", (req, res) => {
+  let userID = req.session.user_id;
   shortURL = generateRandomString();
   urlDatabase[shortURL] = { longURL: req.body.longURL, userID };
   res.redirect(`/urls/${shortURL}`);
@@ -152,6 +153,7 @@ app.get("/register", (req, res) => {
 
 //shorturl to longurl redirect
 app.get("/u/:shortURL", (req, res) => {
+  let userID = req.session.user_id;
   const longURL = 'http://' + urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
